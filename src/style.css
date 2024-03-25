@@ -1,0 +1,18 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+.container_nama {
+    width: 30%;
+    margin: 10px;
+    padding: 8px;
+    border: 3px solid black;
+}
+h1 {
+    text-align: center;
+    margin: auto;
+    padding: 10px 0 5px 0;
+}
+h2 {
+    
+}
