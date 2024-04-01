@@ -1,0 +1,48 @@
+version: '3'
+services:
+  pemrograman_web:
+    build: ./php
+    image: laravel:latest
+    container_name: pemrograman_web
+    hostname: "pemrograman_web"
+    volumes:
+      - ./src:/var/www/html
+      - ./php/www.conf:/usr/local/etc/php-fpm.d/www.conf
+    working_dir: /var/www/html
+    depends_on: 
+      - db_web
+
+  db_web:
+    image: mariadb:10.2
+    container_name: db_web
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "53306:3306"
+    volumes:
+      - ./database/data:/var/lib/mysql
+      - ./conf.d:/etc/mysql/conf.d:ro
+    environment:
+      MYSQL_DATABASE: your_database
+      MYSQL_USER: droid
+      MYSQL_PASSWORD: Droid1234
+      MYSQL_ROOT_PASSWORD: droid12345
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+
+  nginx_web:
+    build: ./nginx
+    image: nginx:latest
+    container_name: nginx_web
+    hostname: "nginx_web"
+    ports:
+      - "6080:80"
+    volumes:
+      - ./src:/var/www/html
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - pemrograman_web
+
+networks:
+  default:
+    driver: bridge
